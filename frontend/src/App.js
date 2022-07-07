@@ -2,13 +2,25 @@ import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import { LinkContainer } from "react-router-bootstrap";
+import FooterComp from "./components/FooterComp/FooterComp";
 
 function App() {
   return (
     <BrowserRouter>
-      <div>
+      <div className="site-container">
         <header>
-          <Link to="/">garatimbi</Link>
+          <Navbar>
+            <Container>
+              <LinkContainer to="/">
+                <Navbar.Brand>
+                  <span>Garatimbi</span>
+                </Navbar.Brand>
+              </LinkContainer>
+            </Container>
+          </Navbar>
         </header>
         <main>
           <Routes>
@@ -16,6 +28,7 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
           </Routes>
         </main>
+        <FooterComp />
       </div>
     </BrowserRouter>
   );
