@@ -12,7 +12,7 @@ function FooterComp() {
               target="_blank"
               rel="noreferrer"
             >
-              <i class="fa-brands fa-linkedin-in"></i>
+              <i className="fa-brands fa-linkedin-in"></i>
             </a>
           </li>
           <li>
@@ -21,7 +21,7 @@ function FooterComp() {
               target="_blank"
               rel="noreferrer"
             >
-              <i class="fa-brands fa-twitter"></i>
+              <i className="fa-brands fa-twitter"></i>
             </a>
           </li>
           <li>
@@ -30,7 +30,7 @@ function FooterComp() {
               target="_blank"
               rel="noreferrer"
             >
-              <i class="fa-brands fa-github"></i>
+              <i className="fa-brands fa-github"></i>
             </a>
           </li>
         </ul>
