@@ -1,18 +1,19 @@
 import axios from "axios";
-import { useEffect, useReducer } from "react";
+import { useContext, useEffect, useReducer } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async"; //Allow to define the title of the page as product name
 
 import Rating from "../components/Rating/Rating";
 import LoadingBox from "../components/LoadingBox/LoadingBox";
 import MessageBox from "../components/MessageBox/MessageBox";
 import { getError } from "../Utils"; //Allow to send back custom error message if define inside the response send back by node server
+import { Store } from "../Store";
 
 //we define state with useReducer
 const reducer = (state, action) => {
@@ -29,6 +30,7 @@ const reducer = (state, action) => {
 };
 
 function ProductScreen() {
+  const navigate = useNavigate();
   const params = useParams(); //We use useParams Hooks puuled from react-router-dom library
   const { slug } = params; //This hooks allow to get route parameters like slug in this case
 
@@ -54,6 +56,26 @@ function ProductScreen() {
     //We call fetchData to make it run
     fetchData();
   }, [slug]); //when slug change, the fetchData function run again and a new dispatch retrieve new product
+
+  //Get the context to dispatch action
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart } = state;
+  //Define addToCartHandler
+  const addToCartHandler = async () => {
+    const existItem = cart.cartItems.find((x) => x._id === product._id); //find if product exist in cart
+    const quantity = existItem ? existItem.quantity + 1 : 1; //if yes increase only the quantity without duplicate the product in the cart
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if (data.countInStock < quantity) {
+      window.alert("Sorry, Product is out of stock.");
+      return;
+    }
+    //we access to the context and change it, here we want to set the quantity to 1
+    ctxDispatch({
+      type: "CART_ADD_ITEM",
+      payload: { ...product, quantity },
+    });
+    navigate("/cart"); //Allow to navigate to other pages thanks to the hooks useNavigate()
+  };
 
   //<ListGroup variant="flush"> this attribute allow to get rid of border around the component?
   //by having d-grid className, the Button has a full width
@@ -115,7 +137,9 @@ function ProductScreen() {
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
-                      <Button variant="primary">Add to Cart</Button>
+                      <Button onClick={addToCartHandler} variant="primary">
+                        Add to Cart
+                      </Button>
                     </div>
                   </ListGroup.Item>
                 )}
