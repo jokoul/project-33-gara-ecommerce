@@ -1,6 +1,7 @@
 const data = {
   products: [
     {
+      _id: "1",
       name: "Wax Slim Shirt",
       slug: "wax-slim-shirt",
       category: "Shirts",
@@ -13,18 +14,20 @@ const data = {
       description: "high quality shirt",
     },
     {
+      _id: "2",
       name: "Afriks Fit Shirt",
       slug: "afriks-fit-shirt",
       category: "Shirts",
       image: "/images/p2.png",
       price: 250,
-      countInStock: 20,
+      countInStock: 0,
       brand: "Afriks",
       rating: 4.0,
       numReviews: 10,
       description: "high quality shirt",
     },
     {
+      _id: "3",
       name: "Wax Slim Pant",
       slug: "wax-slim-pant",
       category: "Pants",
@@ -37,6 +40,7 @@ const data = {
       description: "high quality shirt",
     },
     {
+      _id: "4",
       name: "Afriks Fit Pant",
       slug: "afriks-fit-pant",
       category: "Pants",
