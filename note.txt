@@ -1,0 +1,4 @@
+Below is the connection link to connect to mongo db database garatimbi_db : 
+    1) add password and the name of the database inside the string
+
+mongodb+srv://garatimbi_db:joankoul.1990@cluster0.1lspn.mongodb.net/garatimbi_db?retryWrites=true&w=majority

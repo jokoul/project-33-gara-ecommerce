@@ -23,9 +23,10 @@ header span {
   text-decoration: none;
 }
 
-/*PRODUCTS STYLE*/
+/*HOMESCREEN*/
 main {
   padding: 1rem;
+  min-height: calc(100vh - 18rem);
 }
 .btn-primary {
   background-color: #ff938d;
@@ -80,8 +81,11 @@ main {
 .img-large {
   max-width: 100%;
 }
-/*CART*/
+/*CARTSCREEN*/
 .navbar-light .navbar-nav .nav-link {
+  color: #b8bcc0;
+}
+.navbar-light .navbar-nav .nav-link:focus {
   color: #b8bcc0;
 }
 .navbar-light .navbar-nav .nav-link:hover {
@@ -89,4 +93,8 @@ main {
 }
 .img-thumbnail {
   height: 80px;
+}
+/*SIGNINSCREEN*/
+.small-container {
+  max-width: 900px;
 }

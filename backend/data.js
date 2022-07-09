@@ -1,7 +1,23 @@
+import bcrypt from "bcryptjs"; //BE CAREFULL, bcryptjs package is different from bcrypt package. bcrypt throw error in this case
+
 const data = {
+  users: [
+    {
+      name: "Joan",
+      email: "joankouloumba90@gmail.com",
+      password: bcrypt.hashSync("123456"),
+      isAdmin: true,
+    },
+    {
+      name: "Osiris",
+      email: "kosjoan@yahoo.fr",
+      password: bcrypt.hashSync("123456"),
+      isAdmin: false,
+    },
+  ],
   products: [
     {
-      _id: "1",
+      // _id: "1",//assign automatically by mongodb
       name: "Wax Slim Shirt",
       slug: "wax-slim-shirt",
       category: "Shirts",
@@ -14,7 +30,7 @@ const data = {
       description: "high quality shirt",
     },
     {
-      _id: "2",
+      // _id: "2",
       name: "Afriks Fit Shirt",
       slug: "afriks-fit-shirt",
       category: "Shirts",
@@ -27,7 +43,7 @@ const data = {
       description: "high quality shirt",
     },
     {
-      _id: "3",
+      // _id: "3",
       name: "Wax Slim Pant",
       slug: "wax-slim-pant",
       category: "Pants",
@@ -40,7 +56,7 @@ const data = {
       description: "high quality shirt",
     },
     {
-      _id: "4",
+      // _id: "4",
       name: "Afriks Fit Pant",
       slug: "afriks-fit-pant",
       category: "Pants",
