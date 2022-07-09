@@ -1,6 +1,6 @@
 /*FOOTER STYLE */
 .footer {
-  height: 13rem;
+  min-height: 13rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -11,6 +11,7 @@
   background: -o-linear-gradient(#011603, #011603);
   padding: 1rem;
   margin-top: 10rem;
+  box-sizing: border-box;
 }
 .footer p {
   font-size: 1.2rem;
