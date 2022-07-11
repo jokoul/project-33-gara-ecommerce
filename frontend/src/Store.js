@@ -11,6 +11,9 @@ const initialState = {
     shippingAddress: localStorage.getItem("shippingAddress")
       ? JSON.parse(localStorage.getItem("shippingAddress"))
       : {},
+    paymentMethod: localStorage.getItem("paymentMethod")
+      ? localStorage.getItem("paymentMethod")
+      : "",
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
       : [], //default value
@@ -38,6 +41,8 @@ function reducer(state, action) {
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+    case "CART_CLEAR":
+      return { ...state, cart: { ...state.cart, cartItems: [] } };
     case "USER_SIGNIN":
       return { ...state, userInfo: action.payload }; //we take existing state and update userInfo with the data pull from backend
     case "USER_SIGNOUT":
@@ -47,6 +52,7 @@ function reducer(state, action) {
         cart: {
           cartItems: [],
           shippingAddress: {},
+          paymentMethod: "",
         },
       };
     case "SAVE_SHIPPING_ADDRESS":
@@ -56,6 +62,11 @@ function reducer(state, action) {
           ...state.cart,
           shippingAddress: action.payload, //we update with the data send in payload
         },
+      };
+    case "SAVE_PAYMENT_METHOD":
+      return {
+        ...state,
+        cart: { ...state.cart, paymentMethod: action.payload },
       };
     default:
       return state;

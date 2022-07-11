@@ -14,3 +14,20 @@ export const generateToken = (user) => {
     }
   );
 };
+
+export const isAuth = (req, res, next) => {
+  const authorization = req.headers.authorization;
+  if (authorization) {
+    const token = authorization.slice(7, authorization.length); // Bearer XXXXXXXXXX
+    jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
+      if (err) {
+        res.status(401).send({ message: "Invalid Token" });
+      } else {
+        req.user = decode; //decode is the decrypted version of the token with user information
+        next();
+      }
+    });
+  } else {
+    res.status(401).send({ message: "No Token" });
+  }
+};

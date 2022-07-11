@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../Store";
-import CheckoutSteps from "../components/CheckoutSteps.js/CheckoutSteps";
+import CheckoutSteps from "../components/CheckoutSteps/CheckoutSteps.js";
 
 export default function ShippingAddressScreen() {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function ShippingAddressScreen() {
         country,
       })
     );
-    navigate("/payement"); //navigate user to the payement page
+    navigate("/payment"); //navigate user to the payment page
   };
 
   return (

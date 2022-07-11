@@ -96,7 +96,7 @@ main {
 }
 /*SIGNINSCREEN*/
 .small-container {
-  max-width: 900px;
+  max-width: 600px;
 }
 /*CHECKOUT SCREEN*/
 .checkout-steps > div {
@@ -106,4 +106,13 @@ main {
 .checkout-steps > div.active {
   border-bottom: 0.2rem solid #ff938d;
   color: #ff938d;
+}
+/*ORDERSCREEN*/
+.paypal-container {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0;
+}
+.buttons-container {
+  width: 70%;
 }

@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import seedRouter from "./routes/seedRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 
 //call config method to fetch all Environment Variable define in .env
 dotenv.config();
@@ -26,6 +27,12 @@ const app = express();
 app.use(express.json()); //change all request content-type from json string to javascript object
 app.use(express.urlencoded({ extended: true }));
 
+//Paypal api
+app.get("/api/keys/paypal", (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID || "sb");
+});
+
+//api to seed our database
 app.use("/api/seed", seedRouter);
 
 //middleware get to send an anwser if this endpoint is hit by frontend app
@@ -36,6 +43,9 @@ app.use("/api/products", productRouter);
 
 //middleware to manage user request
 app.use("/api/users", userRouter);
+
+//middleware to manage order request
+app.use("/api/orders", orderRouter);
 
 //Middleware to Define an error handler thanks this package "express-async-handler"
 app.use((err, req, res, next) => {
