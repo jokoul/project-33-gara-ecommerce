@@ -21,6 +21,7 @@ import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 function App() {
   //Get the context to dispatch action
@@ -33,6 +34,7 @@ function App() {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("ShippingAddress");
     localStorage.removeItem("paymentMethod");
+    window.location.href = "/signin";
   };
 
   //ToastContainer limit 1 is to show only one toast at a time.
@@ -55,7 +57,7 @@ function App() {
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto w-100 justify-content-end">
                   <Link to="/cart" className="nav-link">
-                    Cart
+                    Cart <i className="fa-solid fa-cart-shopping"></i>{" "}
                     {cart.cartItems.length > 0 && (
                       <Badge pill bg="danger">
                         {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
@@ -65,10 +67,15 @@ function App() {
                   {userInfo ? (
                     <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                       <LinkContainer to="/profile">
-                        <NavDropdown.Item>User Profile</NavDropdown.Item>
+                        <NavDropdown.Item>
+                          User Profile <i className="fa-solid fa-user"></i>
+                        </NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/orderhistory">
-                        <NavDropdown.Item>Order History</NavDropdown.Item>
+                        <NavDropdown.Item>
+                          Order History{" "}
+                          <i className="fa-solid fa-clock-rotate-left"></i>
+                        </NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Divider />
                       <Link
@@ -76,12 +83,14 @@ function App() {
                         to="#signout"
                         onClick={signoutHandler}
                       >
-                        Sign Out
+                        Sign Out{" "}
+                        <i className="fa-solid fa-arrow-right-from-bracket"></i>
                       </Link>
                     </NavDropdown>
                   ) : (
                     <Link className="nav-link" to="/signin">
-                      Sign in
+                      Sign in{" "}
+                      <i className="fa-solid fa-arrow-right-to-bracket"></i>
                     </Link>
                   )}
                 </Nav>
@@ -96,6 +105,7 @@ function App() {
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
+              <Route path="/profile" element={<ProfileScreen />} />
               <Route path="/placeorder" element={<PlaceOrderScreen />} />
               <Route path="/order/:id" element={<OrderScreen />} />
               <Route path="/orderhistory" element={<OrderHistoryScreen />} />

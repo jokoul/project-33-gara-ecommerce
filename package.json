@@ -1,0 +1,21 @@
+{
+  "name": "mern-stack-ecommerce-website",
+  "version": "1.0.0",
+  "description": "To create this E-commerce web application, I follow these steps :",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "start": "node backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/jokoul/project-33-garatimbi-ecommerce.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jokoul/project-33-garatimbi-ecommerce/issues"
+  },
+  "homepage": "https://github.com/jokoul/project-33-garatimbi-ecommerce#readme"
+}
