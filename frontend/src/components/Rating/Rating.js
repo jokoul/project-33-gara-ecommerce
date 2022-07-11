@@ -1,5 +1,5 @@
 function Rating(props) {
-  const { rating, numReviews } = props;
+  const { rating, numReviews, caption } = props;
   return (
     <div className="rating">
       <span>
@@ -57,7 +57,15 @@ function Rating(props) {
           }
         />
       </span>
-      <span> &nbsp;{numReviews} reviews</span>
+
+      {
+        //conditional rendering depending of caption
+        caption ? (
+          <span>{caption}</span>
+        ) : (
+          <span>{" " + numReviews + " reviews"}</span>
+        )
+      }
     </div>
   );
 }
