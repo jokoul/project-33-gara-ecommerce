@@ -15,7 +15,7 @@ seedRouter.get("/", async (requ, res) => {
   await User.remove({}); //it means return all records inside product
   //create new User
   const createdUsers = await User.insertMany(data.users); //we copy and paste data from data.js to our cloud mongodb
-  res.send({ createdUsers }); //send back answer to the frontend app
+  res.send({ createdUsers, createdProducts }); //send back answer to the frontend app
 });
 
 export default seedRouter;
