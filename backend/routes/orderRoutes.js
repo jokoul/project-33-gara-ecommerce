@@ -2,7 +2,9 @@ import express from "express";
 import expressAsyncHandler from "express-async-handler";
 
 import Order from "../models/orderModel.js";
-import { isAuth } from "../Utils.js";
+import Product from "../models/productModel.js";
+import User from "../models/userModel.js";
+import { isAuth, isAdmin } from "../Utils.js";
 
 const orderRouter = express.Router();
 
@@ -22,6 +24,58 @@ orderRouter.post(
     });
     const order = await newOrder.save();
     res.status(201).send({ message: "New Order Creates", order });
+  })
+);
+
+orderRouter.get(
+  "/summary",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    //we use agregation from mongo db it allows to process multiple data and send a computed result
+    const orders = await Order.aggregate([
+      {
+        //each object is a pipeline
+        $group: {
+          _id: null, //group all data
+          numOrders: { $sum: 1 }, //calculate some of all item. "$sum:1" means count all item in the document and set numOrders with the result
+          totalSales: { $sum: "$totalPrice" }, //calculate sum of total price failed in the order document
+        },
+      },
+    ]);
+    //User aggregation
+    const users = await User.aggregate([
+      {
+        $group: {
+          _id: null,
+          numUsers: { $sum: 1 },
+        },
+      },
+    ]);
+    const dailyOrders = await Order.aggregate([
+      //define a group pipeline
+      {
+        $group: {
+          //Here we group data based on the date of the order
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, //ID or Key of this group based on date,its the create_date of the order but formated with full year, month and day.
+          orders: { $sum: 1 }, //calculate to return number of orders in that current date specified above
+          sales: { $sum: "$totalPrice" }, //calculate total price in that current date specified above
+        },
+      },
+      {
+        $sort: { _id: 1 }, //sort by id
+      },
+    ]);
+    const productCategories = await Product.aggregate([
+      {
+        //we group data based on category in the Product model
+        $group: {
+          _id: "$category",
+          count: { $sum: 1 }, //count the number of item in each category
+        },
+      },
+    ]);
+    res.send({ users, orders, dailyOrders, productCategories });
   })
 );
 

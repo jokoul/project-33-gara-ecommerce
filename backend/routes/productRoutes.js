@@ -1,6 +1,7 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import Product from "../models/productModel.js"; //DON'T FORGET .js
+import { isAdmin, isAuth } from "../Utils.js";
 
 const productRouter = express.Router();
 
@@ -9,7 +10,54 @@ productRouter.get("/", async (req, res) => {
   res.send(products);
 });
 
+//middleware to create a post
+productRouter.post(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    //define new product fields
+    const newProduct = new Product({
+      name: "sample name" + Date.now(), //Date.now() allows to make the name unique
+      slug: "sample-name-" + Date.now(),
+      image: "/images/p1.png",
+      price: 0,
+      category: "sample category", //user need to update this data after creating a record
+      brand: "sample brand",
+      countInStock: 0,
+      rating: 0,
+      numReviews: 0,
+      description: "sample description",
+    });
+    //save new product in database
+    const product = await newProduct.save();
+    res.send({ message: "Product Created", product });
+  })
+);
+
 const PAGE_SIZE = 3;
+
+productRouter.get(
+  "/admin",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const { query } = req;
+    const page = query.page || 1;
+    const pageSize = query.pageSize || PAGE_SIZE;
+    const products = await Product.find()
+      .skip(pageSize * (page - 1)) //escape based on the pages on the product collection
+      .limit(pageSize); //count the number of products using this command.
+    const countProducts = await Product.countDocuments();
+    res.send({
+      products,
+      countProducts,
+      page,
+      pages: Math.ceil(countProducts / pageSize), //to get the number of pages required to show all documents
+    });
+  })
+);
+
 productRouter.get(
   "/search",
   expressAsyncHandler(async (req, res) => {
