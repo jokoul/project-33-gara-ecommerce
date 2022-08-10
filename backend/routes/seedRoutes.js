@@ -7,7 +7,7 @@ import User from "../models/userModel.js";
 const seedRouter = express.Router();
 
 //routes definition with controller as callback function
-seedRouter.get("/", async (requ, res) => {
+seedRouter.get("/", async (req, res) => {
   //first we remove all previous record product
   await Product.remove({}); //it means return all records inside product
   //create new product

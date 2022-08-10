@@ -6,6 +6,7 @@ import seedRouter from "./routes/seedRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
+import uploadRouter from "./routes/uploadRoutes.js";
 
 //call config method to fetch all Environment Variable define in .env
 dotenv.config();
@@ -31,6 +32,13 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/api/keys/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || "sb");
 });
+//Google Maps api
+app.get("/api/keys/google", (req, res) => {
+  res.send({ key: process.env.GOOGLE_API_KEY || "" });
+});
+
+//api to seed our database
+app.use("/api/upload", uploadRouter);
 
 //api to seed our database
 app.use("/api/seed", seedRouter);

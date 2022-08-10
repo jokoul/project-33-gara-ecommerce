@@ -4,9 +4,19 @@ import expressAsyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
 import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
-import { isAuth, isAdmin } from "../Utils.js";
+import { isAuth, isAdmin, mailgun, payOrderEmailTemplate } from "../Utils.js";
 
 const orderRouter = express.Router();
+
+orderRouter.get(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find().populate("user", "name"); //populate('user','name') means that from user object define in order model we just want to retrieve the name not other info like email or password
+    res.send(orders);
+  })
+);
 
 orderRouter.post(
   "/",
@@ -103,10 +113,34 @@ orderRouter.get(
 );
 
 orderRouter.put(
+  "/:id/deliver",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    //get order from db
+    const order = await Order.findById(req.params.id);
+    //check result
+    if (order) {
+      //make change
+      order.isDelivered = true; //set it to true
+      order.deliveredAt = Date.now(); //set current date
+      //save change in db
+      await order.save();
+      //send back answer to frontend
+      res.send({ message: "Order Delivered" });
+    } else {
+      res.status(404).send({ message: "Order Not Found" });
+    }
+  })
+);
+
+orderRouter.put(
   "/:id/pay",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate(
+      "user",
+      "email name"
+    );
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
@@ -117,7 +151,42 @@ orderRouter.put(
         email_address: req.body.email_address,
       };
       const updatedOrder = await order.save();
+
+      //send email after payment
+      mailgun()
+        .messages()
+        .send(
+          {
+            //parameter for send
+            from: "Garatimbi <garatimbi@mg.joan-kouloumba.in>",
+            to: `${order.user.name} <${order.user.email}>`,
+            subject: `New order ${order._id}`,
+            html: payOrderEmailTemplate(order),
+          },
+          (error, body) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(body);
+            }
+          }
+        );
       res.send({ message: "Order Paid", order: updatedOrder });
+    } else {
+      res.status(404).send({ message: "Order Not Found" });
+    }
+  })
+);
+
+orderRouter.delete(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      await order.remove();
+      res.send({ message: "Order Deleted" });
     } else {
       res.status(404).send({ message: "Order Not Found" });
     }
