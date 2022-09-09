@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm install --save --legacy-peer-deps && cd ../frontend && npm install --save --legacy-peer-deps && npm run build",
+    "build": "npm install --save --legacy-peer-deps && node server.js && cd ../frontend && npm install --save --legacy-peer-deps && npm run build",
     "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
