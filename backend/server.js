@@ -55,6 +55,11 @@ app.use("/api/users", userRouter);
 //middleware to manage order request
 app.use("/api/orders", orderRouter);
 
+//Middleware to Define an error handler thanks this package "express-async-handler"
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message }); //500 means server error
+});
+
 //get the current directory path
 const __dirname = path.resolve();
 //to serve all files inside frontend build folder as static file (images, script files, html file,etc.)
@@ -62,11 +67,6 @@ app.use(express.static(path.join(__dirname, "/frontend/build")));
 //this route allows to redirect user and serve index.html if everything user enter after website domain doesn't correspond to any existing route.
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "/frontend/build/index.html"));
-});
-
-//Middleware to Define an error handler thanks this package "express-async-handler"
-app.use((err, req, res, next) => {
-  res.status(500).send({ message: err.message }); //500 means server error
 });
 
 //define port
