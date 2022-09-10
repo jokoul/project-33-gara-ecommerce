@@ -10,4 +10,4 @@ MongoDB, Express.js, React.js, Node.js
 
 ## Launch
 
-https://garatimbi-ecommerce.herokuapp.com/
+https://garatimbi-ecommerce.vercel.app/
