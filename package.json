@@ -4,7 +4,7 @@
   "description": "To create this E-commerce web application, I follow these steps :",
   "main": "index.js",
   "scripts": {
-    "build": "cd backend && npm install --save --legacy-peer-deps && cd ../frontend && npm install --save --legacy-peer-deps && npm run build && npm run start",
+    "build": "cd backend && npm install --save --legacy-peer-deps && cd ../frontend && npm install --save --legacy-peer-deps && npm run build",
     "start": "nodemon backend/server.js && cd frontend && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
